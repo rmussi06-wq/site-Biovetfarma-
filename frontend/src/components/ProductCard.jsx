@@ -97,7 +97,6 @@ const styles = {
     background: 'white',
     borderRadius: '50px',
     padding: '4px 10px',
-    transform: 'rotate(-15deg)',
   },
   badgeText: {
     fontSize: '11px',

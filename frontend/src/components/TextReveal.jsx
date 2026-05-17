@@ -1,89 +1,68 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Revela o texto letra por letra ao entrar na viewport.
- * Desfaz a revelação (letras somem de trás pra frente) ao sair pelo topo ao subir.
+ * Text Reveal Effect clássico:
+ * O texto sobe a partir de uma linha invisível (overflow hidden no wrapper).
+ * Só usado em títulos — em outros blocos o texto fica normal.
  *
  * Props:
- *  text    — string a revelar
- *  as      — tag HTML (default: 'span')
- *  mode    — 'letter' | 'word'
- *  speed   — ms entre cada letra/palavra (default: 30)
- *  style   — estilos inline adicionais
- *  className — classes adicionais
+ *   children — conteúdo a revelar
+ *   delay    — ms de delay antes de animar (para escalonamento entre linhas)
+ *   as       — tag do wrapper externo (default: 'div')
  */
-export default function TextReveal({
-  text,
-  as: Tag = 'span',
-  mode = 'letter',
-  speed = 30,
-  style = {},
-  className = '',
-}) {
-  const ref = useRef(null);
+export default function TextReveal({ children, delay = 0, as: Tag = 'div', style = {}, className = '' }) {
+  const wrapRef = useRef(null);
+  const innerRef = useRef(null);
 
   useEffect(() => {
-    const container = ref.current;
-    if (!container) return;
+    const wrap = wrapRef.current;
+    const inner = innerRef.current;
+    if (!wrap || !inner) return;
 
-    const spans = Array.from(container.querySelectorAll('[data-unit]'));
-    let timers = [];
-
-    const clearTimers = () => {
-      timers.forEach(clearTimeout);
-      timers = [];
+    const show = () => {
+      inner.style.transitionDelay = `${delay}ms`;
+      inner.style.transform = 'translateY(0)';
     };
 
-    const reveal = (reverse = false) => {
-      clearTimers();
-      const ordered = reverse ? [...spans].reverse() : spans;
-      ordered.forEach((span, i) => {
-        const t = setTimeout(() => {
-          if (reverse) span.classList.remove('tr-revealed');
-          else span.classList.add('tr-revealed');
-        }, i * speed);
-        timers.push(t);
-      });
+    const hide = () => {
+      inner.style.transitionDelay = '0ms';
+      inner.style.transform = 'translateY(110%)';
     };
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          reveal(false);
+          show();
         } else {
-          // Saindo pelo TOPO = usuário subiu = desfaz letras
-          if (entry.boundingClientRect.top > 0) {
-            reveal(true);
-          }
-          // Saindo pela PARTE DE BAIXO (rolou além) = mantém revelado
+          // Só oculta se o elemento está ABAIXO da viewport (usuário subiu)
+          if (entry.boundingClientRect.top > 0) hide();
+          // Se está acima (passou), mantém visível
         }
       },
-      { threshold: 0.05, rootMargin: '0px 0px -5% 0px' }
+      { threshold: 0.15 }
     );
 
-    observer.observe(container);
-    return () => {
-      observer.disconnect();
-      clearTimers();
-    };
-  }, [text, speed]);
-
-  const tokens = mode === 'letter' ? text.split('') : text.split(' ');
+    observer.observe(wrap);
+    return () => observer.disconnect();
+  }, [delay]);
 
   return (
-    <Tag ref={ref} style={style} className={className} aria-label={text}>
-      {tokens.map((token, i) => (
-        <span
-          key={i}
-          data-unit
-          aria-hidden="true"
-          className={`tr-unit${mode === 'word' ? ' tr-word' : ''}`}
-        >
-          {token === ' ' || mode === 'word'
-            ? (mode === 'word' ? token + (i < tokens.length - 1 ? ' ' : '') : ' ')
-            : token}
-        </span>
-      ))}
+    <Tag
+      ref={wrapRef}
+      style={{ overflow: 'hidden', display: 'block', ...style }}
+      className={className}
+    >
+      <span
+        ref={innerRef}
+        style={{
+          display: 'block',
+          transform: 'translateY(110%)',
+          transition: 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
+          willChange: 'transform',
+        }}
+      >
+        {children}
+      </span>
     </Tag>
   );
 }

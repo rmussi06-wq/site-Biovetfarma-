@@ -10,20 +10,15 @@ export default function Hero() {
           </div>
 
           <h1 style={styles.title}>
-            <TextReveal text="Saúde e bem-estar" speed={28} /><br />
-            <TextReveal
-              text="para o seu pet"
-              speed={28}
-              style={{ color: 'var(--color-verde-claro)' }}
-            />
+            <TextReveal>Saúde e bem-estar</TextReveal>
+            <TextReveal delay={80} style={{ color: 'var(--color-verde-claro)' }}>
+              para o seu pet
+            </TextReveal>
           </h1>
 
           <p style={styles.subtitle}>
-            <TextReveal
-              text="Medicamentos manipulados com precisão e carinho para cães, gatos e outras espécies. Qualidade veterinária que você pode confiar."
-              mode="word"
-              speed={45}
-            />
+            Medicamentos manipulados com precisão e carinho para cães, gatos e outras espécies.
+            Qualidade veterinária que você pode confiar.
           </p>
 
           <div className="hero-ctas" style={styles.ctas}>
@@ -77,7 +72,6 @@ const styles = {
     overflow: 'hidden',
   },
   badgeWrap: {
-    display: 'inline-flex',
     marginBottom: '20px',
   },
   badge: {
@@ -96,7 +90,7 @@ const styles = {
     fontWeight: 900,
     color: 'white',
     lineHeight: 1.15,
-    marginBottom: '20px',
+    marginBottom: '24px',
   },
   subtitle: {
     fontSize: 'clamp(15px, 2vw, 18px)',

@@ -27,32 +27,28 @@ export default function AboutSection() {
   return (
     <div className="section-container">
       <div style={styles.header}>
-        <div style={styles.pill}>Sobre nós</div>
+        <span style={styles.pill}>Sobre nós</span>
 
+        {/* TextReveal só no título */}
         <h2 style={styles.title}>
-          <TextReveal text="A farmácia veterinária" speed={32} /><br />
-          <TextReveal text="que cuida do seu pet" speed={32} />
+          <TextReveal>A farmácia veterinária</TextReveal>
+          <TextReveal delay={80}>que cuida do seu pet</TextReveal>
         </h2>
 
+        {/* Subtítulo normal, sem efeito */}
         <p style={styles.subtitle}>
-          <TextReveal
-            text="A Biovetfarma é especializada em manipulação veterinária, oferecendo medicamentos de alta qualidade com atendimento personalizado para tutores e médicos veterinários."
-            mode="word"
-            speed={40}
-          />
+          A Biovetfarma é especializada em manipulação veterinária, oferecendo medicamentos
+          de alta qualidade com atendimento personalizado para tutores e médicos veterinários.
         </p>
       </div>
 
+      {/* Cards completamente normais */}
       <div className="about-grid">
         {DIFERENCIAIS.map((item, i) => (
           <div key={i} style={styles.card}>
             <span style={styles.icon} aria-hidden="true">{item.icon}</span>
-            <h3 style={styles.cardTitle}>
-              <TextReveal text={item.title} speed={35} />
-            </h3>
-            <p style={styles.cardText}>
-              <TextReveal text={item.text} mode="word" speed={30} />
-            </p>
+            <h3 style={styles.cardTitle}>{item.title}</h3>
+            <p style={styles.cardText}>{item.text}</p>
           </div>
         ))}
       </div>
@@ -75,8 +71,7 @@ const styles = {
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
-    marginBottom: '16px',
-    transform: 'rotate(-2deg)',
+    marginBottom: '20px',
   },
   title: {
     fontSize: 'clamp(28px, 4vw, 44px)',

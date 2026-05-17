@@ -50,16 +50,12 @@ export default function Landing() {
         <ScrollSection id="produtos">
           <div className="section-container">
             <div style={styles.sectionHeader}>
-              <div style={styles.pill}>Produtos</div>
+              <span style={styles.pill}>Produtos</span>
               <h2 style={styles.sectionTitle}>
-                <TextReveal text="Nossos medicamentos" speed={32} />
+                <TextReveal>Nossos medicamentos</TextReveal>
               </h2>
               <p style={styles.sectionSubtitle}>
-                <TextReveal
-                  text="Fórmulas manipuladas com precisão para o bem-estar do seu pet."
-                  mode="word"
-                  speed={40}
-                />
+                Fórmulas manipuladas com precisão para o bem-estar do seu pet.
               </p>
             </div>
 
@@ -83,9 +79,9 @@ export default function Landing() {
         <ScrollSection id="categorias">
           <div className="section-container">
             <div style={styles.sectionHeader}>
-              <div style={{ ...styles.pill, background: 'rgba(255,255,255,0.3)' }}>Categorias</div>
+              <span style={{ ...styles.pill, background: 'rgba(255,255,255,0.3)' }}>Categorias</span>
               <h2 style={{ ...styles.sectionTitle, color: 'white' }}>
-                <TextReveal text="Encontre pelo tipo" speed={32} />
+                <TextReveal>Encontre pelo tipo</TextReveal>
               </h2>
             </div>
             <div className="cat-grid">
@@ -134,8 +130,7 @@ const styles = {
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
-    marginBottom: '12px',
-    transform: 'rotate(-2deg)',
+    marginBottom: '16px',
   },
   sectionTitle: {
     fontFamily: 'var(--font-title)',
