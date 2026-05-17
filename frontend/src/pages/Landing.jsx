@@ -41,7 +41,7 @@ export default function Landing() {
         </ScrollSection>
 
         <ScrollSection id="produtos" bgColor="#9FD983">
-          <div style={styles.container}>
+          <div className="section-container">
             <div style={styles.sectionHeader}>
               <div style={styles.pill}>Produtos</div>
               <h2 style={styles.sectionTitle}>Nossos medicamentos</h2>
@@ -73,14 +73,14 @@ export default function Landing() {
         </ScrollSection>
 
         <ScrollSection id="categorias" bgColor="#84C165">
-          <div style={styles.container}>
+          <div className="section-container">
             <div style={styles.sectionHeader}>
               <div style={{ ...styles.pill, background: 'rgba(255,255,255,0.3)' }}>Categorias</div>
               <h2 style={{ ...styles.sectionTitle, color: 'white' }}>
                 Encontre pelo tipo
               </h2>
             </div>
-            <div style={styles.catGrid}>
+            <div className="cat-grid">
               {CATEGORIES.filter((c) => c.id !== 'todos').map((cat) => {
                 const count = products.filter((p) => p.category === cat.id).length;
                 return (

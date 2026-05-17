@@ -1,8 +1,8 @@
 export default function Footer() {
   return (
     <footer id="contato" style={styles.footer}>
-      <div style={styles.container}>
-        <div style={styles.brand}>
+      <div className="footer-grid">
+        <div className="footer-brand">
           <p style={styles.logo}>
             <span style={{ color: 'var(--color-turquesa-dark)' }}>BIOVET</span>
             <span style={{ color: 'var(--color-verde)' }}>FARMA</span>
@@ -13,7 +13,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div style={styles.col}>
+        <div>
           <h4 style={styles.colTitle}>Contato</h4>
           <ul style={styles.list}>
             <li>
@@ -29,7 +29,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div style={styles.col}>
+        <div>
           <h4 style={styles.colTitle}>Redes Sociais</h4>
           <ul style={styles.list}>
             <li>
@@ -45,7 +45,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div style={styles.col}>
+        <div>
           <h4 style={styles.colTitle}>Navegação</h4>
           <ul style={styles.list}>
             {['hero', 'sobre', 'produtos', 'categorias'].map((id) => (
@@ -62,12 +62,12 @@ export default function Footer() {
         </div>
       </div>
 
-      <div style={styles.bottom}>
+      <div className="footer-bottom">
         <p style={styles.copy}>
           © {new Date().getFullYear()} Biovetfarma — Manipulação Veterinária. Todos os direitos reservados.
         </p>
         <p style={styles.cfmv}>
-          CRF responsável: consulte o farmacêutico.
+          Consulte sempre um médico veterinário.
         </p>
       </div>
     </footer>
@@ -79,16 +79,6 @@ const styles = {
     background: 'var(--color-creme)',
     padding: '60px 40px 0',
   },
-  container: {
-    maxWidth: '1100px',
-    margin: '0 auto',
-    display: 'grid',
-    gridTemplateColumns: '2fr 1fr 1fr 1fr',
-    gap: '40px',
-    paddingBottom: '40px',
-    borderBottom: '1px solid var(--color-musgo)',
-  },
-  brand: {},
   logo: {
     fontFamily: 'var(--font-title)',
     fontWeight: 900,
@@ -107,7 +97,6 @@ const styles = {
     lineHeight: 1.6,
     maxWidth: '260px',
   },
-  col: {},
   colTitle: {
     fontFamily: 'var(--font-title)',
     fontWeight: 700,
@@ -127,7 +116,6 @@ const styles = {
     fontSize: '14px',
     color: '#555',
     textDecoration: 'none',
-    transition: 'color 0.2s',
   },
   navBtn: {
     background: 'none',
@@ -137,17 +125,6 @@ const styles = {
     cursor: 'pointer',
     padding: 0,
     fontFamily: 'var(--font-body)',
-    transition: 'color 0.2s',
-  },
-  bottom: {
-    maxWidth: '1100px',
-    margin: '0 auto',
-    padding: '20px 0',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: '8px',
   },
   copy: {
     fontSize: '13px',

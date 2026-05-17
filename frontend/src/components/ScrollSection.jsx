@@ -6,7 +6,6 @@ export default function ScrollSection({ id, bgColor, children, style = {} }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -15,7 +14,6 @@ export default function ScrollSection({ id, bgColor, children, style = {} }) {
       },
       { threshold: 0.4 }
     );
-
     observer.observe(el);
     return () => observer.disconnect();
   }, [bgColor]);
@@ -25,6 +23,7 @@ export default function ScrollSection({ id, bgColor, children, style = {} }) {
       id={id}
       ref={ref}
       data-bg={bgColor}
+      className="scroll-section-inner"
       style={{
         padding: '80px 40px',
         transition: 'background-color 0.8s ease',

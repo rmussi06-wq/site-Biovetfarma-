@@ -44,7 +44,7 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div className="section-container">
       <div style={styles.header}>
         <div style={styles.pill}>Sobre nós</div>
         <h2 style={styles.title}>
@@ -56,7 +56,7 @@ export default function AboutSection() {
         </p>
       </div>
 
-      <div style={styles.grid}>
+      <div className="about-grid">
         {DIFERENCIAIS.map((item, i) => (
           <div
             key={i}

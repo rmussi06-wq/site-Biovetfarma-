@@ -7,9 +7,7 @@ export default function Hero() {
     const el = titleRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) el.classList.add('fade-in-up');
-      },
+      ([entry]) => { if (entry.isIntersecting) el.classList.add('fade-in-up'); },
       { threshold: 0.3 }
     );
     observer.observe(el);
@@ -18,10 +16,10 @@ export default function Hero() {
 
   return (
     <section id="hero" style={styles.section}>
-      <div style={styles.container}>
-        <div ref={titleRef} style={styles.content}>
-          <div style={styles.badge}>
-            <span>Farmácia Veterinária</span>
+      <div className="hero-container">
+        <div ref={titleRef} style={{ opacity: 0 }}>
+          <div style={styles.badgeWrap}>
+            <span style={styles.badge}>Farmácia Veterinária</span>
           </div>
           <h1 style={styles.title}>
             Saúde e bem-estar<br />
@@ -31,7 +29,7 @@ export default function Hero() {
             Medicamentos manipulados com precisão e carinho para cães, gatos e outras espécies.
             Qualidade veterinária que você pode confiar.
           </p>
-          <div style={styles.ctas}>
+          <div className="hero-ctas" style={styles.ctas}>
             <button
               style={styles.primaryBtn}
               onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
@@ -49,7 +47,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div style={styles.illustration}>
+        <div className="hero-illustration">
           <div style={styles.circle1} />
           <div style={styles.circle2} />
           <div style={styles.mainCircle}>
@@ -82,23 +80,11 @@ const styles = {
     position: 'relative',
     overflow: 'hidden',
   },
-  container: {
-    maxWidth: '1100px',
-    margin: '0 auto',
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '60px',
-    alignItems: 'center',
-    width: '100%',
-  },
-  content: {
-    opacity: 0,
-  },
-  badge: {
+  badgeWrap: {
     display: 'inline-flex',
     marginBottom: '20px',
   },
-  badgeInner: {
+  badge: {
     background: 'rgba(255,255,255,0.2)',
     color: 'white',
     padding: '6px 16px',
@@ -110,7 +96,7 @@ const styles = {
     border: '1px solid rgba(255,255,255,0.3)',
   },
   title: {
-    fontSize: 'clamp(36px, 5vw, 60px)',
+    fontSize: 'clamp(32px, 5vw, 60px)',
     fontWeight: 900,
     color: 'white',
     lineHeight: 1.1,
@@ -120,7 +106,7 @@ const styles = {
     color: 'var(--color-verde-claro)',
   },
   subtitle: {
-    fontSize: '18px',
+    fontSize: 'clamp(15px, 2vw, 18px)',
     color: 'rgba(255,255,255,0.85)',
     lineHeight: 1.7,
     marginBottom: '36px',
@@ -141,7 +127,6 @@ const styles = {
     fontSize: '16px',
     border: 'none',
     cursor: 'pointer',
-    transition: 'transform 0.2s, box-shadow 0.2s',
     boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
   },
   secondaryBtn: {
@@ -154,18 +139,10 @@ const styles = {
     fontSize: '16px',
     border: '2px solid rgba(255,255,255,0.6)',
     cursor: 'pointer',
-    transition: 'background 0.2s, border-color 0.2s',
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
     gap: '8px',
     textDecoration: 'none',
-  },
-  illustration: {
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '400px',
   },
   mainCircle: {
     width: '280px',
@@ -201,8 +178,6 @@ const styles = {
     bottom: '30px',
     left: '50%',
     transform: 'translateX(-50%)',
-    display: 'flex',
-    justifyContent: 'center',
   },
   scrollDot: {
     width: '6px',
