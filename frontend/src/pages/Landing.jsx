@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase.js';
+import { db, firebaseConfigured } from '../firebase.js';
 import Navbar from '../components/Navbar.jsx';
 import Hero from '../components/Hero.jsx';
 import ScrollSection from '../components/ScrollSection.jsx';
@@ -14,6 +14,7 @@ export default function Landing() {
   const [activeCategory, setActiveCategory] = useState('todos');
 
   useEffect(() => {
+    if (!firebaseConfigured) return;
     const q = query(
       collection(db, 'products'),
       where('active', '==', true),

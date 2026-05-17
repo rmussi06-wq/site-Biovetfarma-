@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../firebase.js';
+import { auth, firebaseConfigured } from '../firebase.js';
 import LoginForm from '../components/admin/LoginForm.jsx';
 import ProductList from '../components/admin/ProductList.jsx';
 import ProductForm from '../components/admin/ProductForm.jsx';
 
 export default function Admin() {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(firebaseConfigured ? undefined : null);
   const [view, setView] = useState('list');
   const [editProduct, setEditProduct] = useState(null);
 
   useEffect(() => {
+    if (!firebaseConfigured) return;
     const unsub = onAuthStateChanged(auth, (u) => setUser(u));
     return unsub;
   }, []);
