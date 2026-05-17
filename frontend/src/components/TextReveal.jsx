@@ -10,7 +10,7 @@ import { useEffect, useRef } from 'react';
  * Um fator de velocidade faz com que todas as letras apareçam antes
  * do bloco sair de vista.
  */
-export default function TextReveal({ children, as: Tag = 'div', style = {}, className = '' }) {
+export default function TextReveal({ children, as: Tag = 'div', style = {}, className = '', pixelDelay = 0 }) {
   const ref = useRef(null);
   const text = typeof children === 'string' ? children : '';
 
@@ -25,12 +25,10 @@ export default function TextReveal({ children, as: Tag = 'div', style = {}, clas
       const rect = el.getBoundingClientRect();
       const wh = window.innerHeight;
 
-      // Progresso bruto: 0 quando o topo do bloco chega na base da tela,
-      // 1 quando a base do bloco sai pelo topo.
-      const raw = (wh - rect.top) / (wh + rect.height);
-
-      // Fator 1.6: todas as letras reveladas quando o bloco ainda está
-      // ~40% visível, sem precisar rolá-lo inteiramente para fora.
+      // pixelDelay desloca o "topo virtual" do elemento para baixo,
+      // fazendo o efeito começar mais tarde no scroll.
+      const effectiveTop = rect.top + pixelDelay;
+      const raw = (wh - effectiveTop) / (wh + rect.height);
       const progress = Math.max(0, Math.min(1, raw * 1.6));
       const revealed = Math.round(progress * spans.length);
 

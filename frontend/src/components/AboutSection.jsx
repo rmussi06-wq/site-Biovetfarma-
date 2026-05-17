@@ -32,7 +32,7 @@ export default function AboutSection() {
         {/* TextReveal só no título */}
         <h2 style={styles.title}>
           <TextReveal>A farmácia veterinária</TextReveal>
-          <TextReveal>que cuida do seu pet</TextReveal>
+          <TextReveal pixelDelay={220}>que cuida do seu pet</TextReveal>
         </h2>
 
         {/* Subtítulo normal, sem efeito */}
