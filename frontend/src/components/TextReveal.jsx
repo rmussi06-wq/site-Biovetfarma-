@@ -1,68 +1,75 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Text Reveal Effect clássico:
- * O texto sobe a partir de uma linha invisível (overflow hidden no wrapper).
- * Só usado em títulos — em outros blocos o texto fica normal.
+ * Revela o texto letra a letra conforme o bloco entra na viewport,
+ * proporcional ao scroll. Desfaz na mesma proporção ao subir.
  *
- * Props:
- *   children — conteúdo a revelar
- *   delay    — ms de delay antes de animar (para escalonamento entre linhas)
- *   as       — tag do wrapper externo (default: 'div')
+ * progress = 0 → bloco aparecendo na base da tela (nenhuma letra)
+ * progress = 1 → bloco saindo pelo topo (todas as letras reveladas)
+ *
+ * Um fator de velocidade faz com que todas as letras apareçam antes
+ * do bloco sair de vista.
  */
-export default function TextReveal({ children, delay = 0, as: Tag = 'div', style = {}, className = '' }) {
-  const wrapRef = useRef(null);
-  const innerRef = useRef(null);
+export default function TextReveal({ children, as: Tag = 'div', style = {}, className = '' }) {
+  const ref = useRef(null);
+  const text = typeof children === 'string' ? children : '';
 
   useEffect(() => {
-    const wrap = wrapRef.current;
-    const inner = innerRef.current;
-    if (!wrap || !inner) return;
+    const el = ref.current;
+    if (!el) return;
 
-    const show = () => {
-      inner.style.transitionDelay = `${delay}ms`;
-      inner.style.transform = 'translateY(0)';
+    const spans = Array.from(el.querySelectorAll('[data-c]'));
+    let raf = null;
+
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      const wh = window.innerHeight;
+
+      // Progresso bruto: 0 quando o topo do bloco chega na base da tela,
+      // 1 quando a base do bloco sai pelo topo.
+      const raw = (wh - rect.top) / (wh + rect.height);
+
+      // Fator 1.6: todas as letras reveladas quando o bloco ainda está
+      // ~40% visível, sem precisar rolá-lo inteiramente para fora.
+      const progress = Math.max(0, Math.min(1, raw * 1.6));
+      const revealed = Math.round(progress * spans.length);
+
+      for (let i = 0; i < spans.length; i++) {
+        spans[i].style.opacity = i < revealed ? '1' : '0.18';
+      }
     };
 
-    const hide = () => {
-      inner.style.transitionDelay = '0ms';
-      inner.style.transform = 'translateY(110%)';
+    const onScroll = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
     };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          show();
-        } else {
-          // Só oculta se o elemento está ABAIXO da viewport (usuário subiu)
-          if (entry.boundingClientRect.top > 0) hide();
-          // Se está acima (passou), mantém visível
-        }
-      },
-      { threshold: 0.15 }
-    );
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update(); // estado inicial
 
-    observer.observe(wrap);
-    return () => observer.disconnect();
-  }, [delay]);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [text]);
 
   return (
-    <Tag
-      ref={wrapRef}
-      style={{ overflow: 'hidden', display: 'block', ...style }}
-      className={className}
-    >
-      <span
-        ref={innerRef}
-        style={{
-          display: 'block',
-          transform: 'translateY(110%)',
-          transition: 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
-          willChange: 'transform',
-        }}
-      >
-        {children}
-      </span>
+    <Tag ref={ref} className={className} style={style} aria-label={text}>
+      {text.split('').map((char, i) => (
+        <span
+          key={i}
+          data-c
+          aria-hidden="true"
+          style={{
+            display: 'inline-block',
+            opacity: 0.18,
+            transition: 'opacity 0.06s linear',
+            whiteSpace: char === ' ' ? 'pre' : 'normal',
+          }}
+        >
+          {char === ' ' ? ' ' : char}
+        </span>
+      ))}
     </Tag>
   );
 }

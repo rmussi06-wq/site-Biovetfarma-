@@ -11,7 +11,7 @@ export default function Hero() {
 
           <h1 style={styles.title}>
             <TextReveal>Saúde e bem-estar</TextReveal>
-            <TextReveal delay={80} style={{ color: 'var(--color-verde-claro)' }}>
+            <TextReveal style={{ color: 'var(--color-verde-claro)' }}>
               para o seu pet
             </TextReveal>
           </h1>
