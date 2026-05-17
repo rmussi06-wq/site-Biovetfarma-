@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { db, firebaseConfigured } from '../firebase.js';
+import { useScrollBackground } from '../hooks/useScrollBackground.js';
 import Navbar from '../components/Navbar.jsx';
 import Hero from '../components/Hero.jsx';
 import ScrollSection from '../components/ScrollSection.jsx';
 import AboutSection from '../components/AboutSection.jsx';
 import CategoryMenu, { CATEGORIES } from '../components/CategoryMenu.jsx';
 import ProductCarousel from '../components/ProductCarousel.jsx';
+import TextReveal from '../components/TextReveal.jsx';
 import Footer from '../components/Footer.jsx';
 
 export default function Landing() {
+  useScrollBackground();
+
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState('todos');
 
@@ -36,17 +40,26 @@ export default function Landing() {
       <main>
         <Hero />
 
-        <ScrollSection id="sobre" bgColor="#CFF9B9" style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <ScrollSection
+          id="sobre"
+          style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+        >
           <AboutSection />
         </ScrollSection>
 
-        <ScrollSection id="produtos" bgColor="#9FD983">
+        <ScrollSection id="produtos">
           <div className="section-container">
             <div style={styles.sectionHeader}>
               <div style={styles.pill}>Produtos</div>
-              <h2 style={styles.sectionTitle}>Nossos medicamentos</h2>
+              <h2 style={styles.sectionTitle}>
+                <TextReveal text="Nossos medicamentos" speed={32} />
+              </h2>
               <p style={styles.sectionSubtitle}>
-                Fórmulas manipuladas com precisão para o bem-estar do seu pet.
+                <TextReveal
+                  text="Fórmulas manipuladas com precisão para o bem-estar do seu pet."
+                  mode="word"
+                  speed={40}
+                />
               </p>
             </div>
 
@@ -55,14 +68,9 @@ export default function Landing() {
             {filtered.length === 0 && products.length > 0 && (
               <p style={styles.noProducts}>Nenhum produto nesta categoria ainda.</p>
             )}
-
             {filtered.length > 0 && (
-              <ProductCarousel
-                products={filtered}
-                category={activeCategory}
-              />
+              <ProductCarousel products={filtered} category={activeCategory} />
             )}
-
             {products.length === 0 && (
               <div style={styles.loadingProducts}>
                 <div style={styles.spinner} />
@@ -72,12 +80,12 @@ export default function Landing() {
           </div>
         </ScrollSection>
 
-        <ScrollSection id="categorias" bgColor="#84C165">
+        <ScrollSection id="categorias">
           <div className="section-container">
             <div style={styles.sectionHeader}>
               <div style={{ ...styles.pill, background: 'rgba(255,255,255,0.3)' }}>Categorias</div>
               <h2 style={{ ...styles.sectionTitle, color: 'white' }}>
-                Encontre pelo tipo
+                <TextReveal text="Encontre pelo tipo" speed={32} />
               </h2>
             </div>
             <div className="cat-grid">
@@ -104,7 +112,7 @@ export default function Landing() {
           </div>
         </ScrollSection>
 
-        <ScrollSection id="footer-section" bgColor="#FEFED3" style={{ padding: 0 }}>
+        <ScrollSection id="footer-section" style={{ padding: 0 }}>
           <Footer />
         </ScrollSection>
       </main>
@@ -113,10 +121,6 @@ export default function Landing() {
 }
 
 const styles = {
-  container: {
-    maxWidth: '1100px',
-    margin: '0 auto',
-  },
   sectionHeader: {
     marginBottom: '40px',
   },
@@ -167,12 +171,6 @@ const styles = {
     borderTop: '3px solid var(--color-turquesa-dark)',
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite',
-  },
-  catGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-    gap: '16px',
-    marginTop: '20px',
   },
   catCard: {
     background: 'rgba(255,255,255,0.25)',

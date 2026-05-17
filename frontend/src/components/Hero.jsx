@@ -1,34 +1,31 @@
-import { useEffect, useRef } from 'react';
+import TextReveal from './TextReveal.jsx';
 
 export default function Hero() {
-  const titleRef = useRef(null);
-
-  useEffect(() => {
-    const el = titleRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) el.classList.add('fade-in-up'); },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section id="hero" style={styles.section}>
       <div className="hero-container">
-        <div ref={titleRef} style={{ opacity: 0 }}>
+        <div>
           <div style={styles.badgeWrap}>
             <span style={styles.badge}>Farmácia Veterinária</span>
           </div>
+
           <h1 style={styles.title}>
-            Saúde e bem-estar<br />
-            <span style={styles.titleHighlight}>para o seu pet</span>
+            <TextReveal text="Saúde e bem-estar" speed={28} /><br />
+            <TextReveal
+              text="para o seu pet"
+              speed={28}
+              style={{ color: 'var(--color-verde-claro)' }}
+            />
           </h1>
+
           <p style={styles.subtitle}>
-            Medicamentos manipulados com precisão e carinho para cães, gatos e outras espécies.
-            Qualidade veterinária que você pode confiar.
+            <TextReveal
+              text="Medicamentos manipulados com precisão e carinho para cães, gatos e outras espécies. Qualidade veterinária que você pode confiar."
+              mode="word"
+              speed={45}
+            />
           </p>
+
           <div className="hero-ctas" style={styles.ctas}>
             <button
               style={styles.primaryBtn}
@@ -72,7 +69,6 @@ export default function Hero() {
 const styles = {
   section: {
     minHeight: '100vh',
-    background: 'var(--color-turquesa)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -99,11 +95,8 @@ const styles = {
     fontSize: 'clamp(32px, 5vw, 60px)',
     fontWeight: 900,
     color: 'white',
-    lineHeight: 1.1,
+    lineHeight: 1.15,
     marginBottom: '20px',
-  },
-  titleHighlight: {
-    color: 'var(--color-verde-claro)',
   },
   subtitle: {
     fontSize: 'clamp(15px, 2vw, 18px)',

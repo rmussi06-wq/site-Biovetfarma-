@@ -29,7 +29,7 @@ body {
   font-family: var(--font-body);
   color: var(--color-text);
   background-color: var(--color-turquesa);
-  transition: var(--transition-bg);
+  /* transição gerenciada pelo hook useScrollBackground via rAF */
   overflow-x: hidden;
 }
 
@@ -102,4 +102,23 @@ img {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+/* ── TextReveal ──────────────────── */
+.tr-unit {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  will-change: opacity, transform;
+}
+
+.tr-unit.tr-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* palavras têm transição um pouco mais suave */
+.tr-word {
+  transition-duration: 0.45s;
 }

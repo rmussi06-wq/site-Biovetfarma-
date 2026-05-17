@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import TextReveal from './TextReveal.jsx';
 
 const DIFERENCIAIS = [
   {
@@ -24,48 +24,35 @@ const DIFERENCIAIS = [
 ];
 
 export default function AboutSection() {
-  const itemRefs = useRef([]);
-
-  useEffect(() => {
-    const observers = itemRefs.current.map((el, i) => {
-      if (!el) return null;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => el.classList.add('fade-in-up'), i * 120);
-          }
-        },
-        { threshold: 0.2 }
-      );
-      obs.observe(el);
-      return obs;
-    });
-    return () => observers.forEach((o) => o?.disconnect());
-  }, []);
-
   return (
     <div className="section-container">
       <div style={styles.header}>
         <div style={styles.pill}>Sobre nós</div>
+
         <h2 style={styles.title}>
-          A farmácia veterinária<br />que cuida do seu pet
+          <TextReveal text="A farmácia veterinária" speed={32} /><br />
+          <TextReveal text="que cuida do seu pet" speed={32} />
         </h2>
+
         <p style={styles.subtitle}>
-          A Biovetfarma é especializada em manipulação veterinária, oferecendo medicamentos
-          de alta qualidade com atendimento personalizado para tutores e médicos veterinários.
+          <TextReveal
+            text="A Biovetfarma é especializada em manipulação veterinária, oferecendo medicamentos de alta qualidade com atendimento personalizado para tutores e médicos veterinários."
+            mode="word"
+            speed={40}
+          />
         </p>
       </div>
 
       <div className="about-grid">
         {DIFERENCIAIS.map((item, i) => (
-          <div
-            key={i}
-            ref={(el) => (itemRefs.current[i] = el)}
-            style={{ ...styles.card, opacity: 0 }}
-          >
+          <div key={i} style={styles.card}>
             <span style={styles.icon} aria-hidden="true">{item.icon}</span>
-            <h3 style={styles.cardTitle}>{item.title}</h3>
-            <p style={styles.cardText}>{item.text}</p>
+            <h3 style={styles.cardTitle}>
+              <TextReveal text={item.title} speed={35} />
+            </h3>
+            <p style={styles.cardText}>
+              <TextReveal text={item.text} mode="word" speed={30} />
+            </p>
           </div>
         ))}
       </div>
@@ -74,10 +61,6 @@ export default function AboutSection() {
 }
 
 const styles = {
-  container: {
-    maxWidth: '1100px',
-    margin: '0 auto',
-  },
   header: {
     textAlign: 'center',
     marginBottom: '60px',
@@ -108,11 +91,6 @@ const styles = {
     lineHeight: 1.7,
     maxWidth: '560px',
     margin: '0 auto',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-    gap: '24px',
   },
   card: {
     background: 'white',
